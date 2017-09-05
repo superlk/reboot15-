@@ -96,10 +96,10 @@ M端:
 ### 管理员界面    
 V端: 
 <pre>
-1. 左部分 ----><font color=red>显示管理员功能</font>
+1. 左部分 ----><font color=red>显示管理员功能/普通用户更能</font>
 
 2. 右部分 
-user_list.html （左半部分显示管理员功能，右边一个表格显示所有用户信息） 
+list.html （右边一个表格显示所有用户信息） 
 id ，用户名 ，密码， 权限 ，操作（删除，修改） 
 {% for i in user_dict %}                                
   {{ user_dict.id}} ,{{user_dict.username}},{{user_idct.password}},{{user_dict.role}}<\a href="/delete/?id={{user_dict.id }}">删除</a><\a href="/update/?id={{}user_dict.id}">修改</id>
@@ -120,30 +120,12 @@ M端:
 sql="delete from user where id=%s"%id
 </pre>
 
-###普通用户界面：
-V端：
-<pre>
-1. 左部分 ---> <font color=red>显示普通用户功能</font>
-  
-2. 右部分，显示单用户信息（普通用户不能修改权限）
- user.html (表格)
- id， 用户名，密码 ，操作 （修改，删除）
- {{user_dict.username}},{{user_idct.password}}, <\a href="/delete/?id={{user_dict.id }}" >删除</a><\a href="/update/user/?id={{}user_dict.id}">修改</id>
-</pre>
+### 删除界面
+V端： 在list.html上有个按钮，删除后直接跳到登录界面
 
-C端：
-<pre>
-@app.route("/delete/user")
-def deleteuser():
-    id=request.args.get("id"," ")
-        执行删除函数
-    return render_tempalte("login.html")
-</pre>
+C端： 获取前端id，根据执行删除sql，然后跳转到login.html
 
-M端: 
-<pre>
-sql="delete from user where id=%s"%id
-</pre>
+M端： sql="delete from %s where id =%s"%(table,uid)
 
 ### 更新页面
 V端: update.html
@@ -161,7 +143,7 @@ def update():
     获取修改的数据
     执行update sql 更改数据库
             
-    return render_template("跳转到管理员界面")
+    return render_template("跳转登录界面")
        
   普通用户同上 
 </pre>  
@@ -173,4 +155,20 @@ M端：
   sql="update user set password='%s',sex=%d,age=%d,phone=%d,email='%s',role=%d where id=%d"%(my_tup[0],my_tup[1],my_tup    
 </pre>       
 
+### 目录结构
+<pre>
+.
+├── app.py                 # 主程序
+├── README.md              # 项目文档
+├── show_create_table.md   # 表结构
+├── static 
+├── templates
+│   ├── index.html         # 首页
+│   ├── list.html          # 用户页面
+│   ├── login.html         # 登录页面
+│   ├── reg.html           # 注册页面
+│   └── update.html        # 更新页面
+├── utils.py               # 功能函数
+└── utils.pyc
 
+</pre>
